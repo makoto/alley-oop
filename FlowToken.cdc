@@ -1,46 +1,95 @@
-import FungibleToken from 0xFUNGIBLETOKENADDRESS
+// FlowToken.cdc
+//
+// The FlowToken contract is a sample implementation of a fungible token on Flow.
+//
+// Fungible tokens behave like everyday currencies -- they can be minted, transferred or
+// traded for digital goods.
+//
+// Follow the fungible tokens tutorial to learn more: https://docs.onflow.org/docs/fungible-tokens
 
-pub contract FlowToken: FungibleToken {
+pub contract FlowToken {
 
-    // Total supply of FlowTokens in existence
+    // Total supply of all tokens in existence.
     pub var totalSupply: UFix64
 
-    // Event that is emitted when the contract is created
-    pub event TokensInitialized(initialSupply: UFix64)
+    // Provider
+    // 
+    // Interface that enforces the requirements for withdrawing
+    // tokens from the implementing type.
+    //
+    // We don't enforce requirements on self.balance here because
+    // it leaves open the possibility of creating custom providers
+    // that don't necessarily need their own balance.
+    //
+    pub resource interface Provider {
 
-    // Event that is emitted when tokens are withdrawn from a Vault
-    pub event TokensWithdrawn(amount: UFix64, from: Address?)
+        // withdraw
+        //
+        // Function that subtracts tokens from the owner's Vault
+        // and returns a Vault resource (@Vault) with the removed tokens.
+        //
+        // The function's access level is public, but this isn't a problem
+        // because even the public functions are not fully public at first.
+        // anyone in the network can call them, but only if the owner grants
+        // them access by publishing a resource that exposes the withdraw
+        // function.
+        //
+        pub fun withdraw(amount: UFix64): @Vault {
+            post {
+                // `result` refers to the return value of the function
+                result.balance == UFix64(amount):
+                    "Withdrawal amount must be the same as the balance of the withdrawn Vault"
+            }
+        }
+    }
 
-    // Event that is emitted when tokens are deposited to a Vault
-    pub event TokensDeposited(amount: UFix64, to: Address?)
+    // Receiver 
+    //
+    // Interface that enforces the requirements for depositing
+    // tokens into the implementing type.
+    //
+    // We don't include a condition that checks the balance because
+    // we want to give users the ability to make custom Receivers that
+    // can do custom things with the tokens, like split them up and
+    // send them to different places.
+    //
+	pub resource interface Receiver {
+        // deposit
+        //
+        // Function that can be called to deposit tokens 
+        // into the implementing resource type
+        //
+        pub fun deposit(from: @Vault) {
+            pre {
+                from.balance > UFix64(0):
+                    "Deposit balance must be positive"
+            }
+        }
+    }
 
-    // Event that is emitted when new tokens are minted
-    pub event TokensMinted(amount: UFix64)
-
-    // Event that is emitted when tokens are destroyed
-    pub event TokensBurned(amount: UFix64)
-
-    // Event that is emitted when a new minter resource is created
-    pub event MinterCreated(allowedAmount: UFix64)
-
-    // Event that is emitted when a new burner resource is created
-    pub event BurnerCreated()
+    // Balance
+    //
+    // Interface that specifies a public `balance` field for the vault
+    //
+    pub resource interface Balance {
+        pub var balance: UFix64
+    }
 
     // Vault
     //
     // Each user stores an instance of only the Vault in their storage
     // The functions in the Vault and governed by the pre and post conditions
-    // in FungibleToken when they are called.
+    // in the interfaces when they are called. 
     // The checks happen at runtime whenever a function is called.
     //
     // Resources can only be created in the context of the contract that they
     // are defined in, so there is no way for a malicious user to create Vaults
     // out of thin air. A special Minter resource needs to be defined to mint
     // new tokens.
-    //
-    pub resource Vault: FungibleToken.Provider, FungibleToken.Receiver, FungibleToken.Balance {
-
-        // holds the balance of a users tokens
+    // 
+    pub resource Vault: Provider, Receiver, Balance {
+        
+		// keeps track of the total balance of the account's tokens
         pub var balance: UFix64
 
         // initialize the balance at resource creation time
@@ -52,34 +101,28 @@ pub contract FlowToken: FungibleToken {
         //
         // Function that takes an integer amount as an argument
         // and withdraws that amount from the Vault.
+        //
         // It creates a new temporary Vault that is used to hold
         // the money that is being transferred. It returns the newly
         // created Vault to the context that called so it can be deposited
         // elsewhere.
         //
-        pub fun withdraw(amount: UFix64): @FungibleToken.Vault {
+        pub fun withdraw(amount: UFix64): @Vault {
             self.balance = self.balance - amount
-            emit TokensWithdrawn(amount: amount, from: self.owner?.address)
             return <-create Vault(balance: amount)
         }
-
+        
         // deposit
         //
         // Function that takes a Vault object as an argument and adds
         // its balance to the balance of the owners Vault.
+        //
         // It is allowed to destroy the sent Vault because the Vault
         // was a temporary holder of the tokens. The Vault's balance has
         // been consumed and therefore can be destroyed.
-        pub fun deposit(from: @FungibleToken.Vault) {
-            let vault <- from as! @FlowToken.Vault
-            self.balance = self.balance + vault.balance
-            emit TokensDeposited(amount: vault.balance, to: self.owner?.address)
-            vault.balance = 0.0
-            destroy vault
-        }
-
-        destroy() {
-            FlowToken.totalSupply = FlowToken.totalSupply - self.balance
+        pub fun deposit(from: @Vault) {
+            self.balance = self.balance + from.balance
+            destroy from
         }
     }
 
@@ -90,109 +133,50 @@ pub contract FlowToken: FungibleToken {
     // and store the returned Vault in their storage in order to allow their
     // account to be able to receive deposits of this token type.
     //
-    pub fun createEmptyVault(): @FungibleToken.Vault {
+    pub fun createEmptyVault(): @Vault {
         return <-create Vault(balance: 0.0)
     }
 
-    pub resource Administrator {
-        // createNewMinter
-        //
-        // Function that creates and returns a new minter resource
-        //
-        pub fun createNewMinter(allowedAmount: UFix64): @Minter {
-            emit MinterCreated(allowedAmount: allowedAmount)
-            return <-create Minter(allowedAmount: allowedAmount)
-        }
+	// VaultMinter
+    //
+    // Resource object that an admin can control to mint new tokens
+    pub resource VaultMinter {
 
-        // createNewBurner
-        //
-        // Function that creates and returns a new burner resource
-        //
-        pub fun createNewBurner(): @Burner {
-            emit BurnerCreated()
-            return <-create Burner()
+		// Function that mints new tokens and deposits into an account's vault
+		// using their `Receiver` reference.
+        // We say `&AnyResource{Receiver}` to say that the recipient can be any resource
+        // as long as it implements the Receiver interface
+        pub fun mintTokens(amount: UFix64, recipient: &AnyResource{Receiver}) {
+			FlowToken.totalSupply = FlowToken.totalSupply + amount
+            recipient.deposit(from: <-create Vault(balance: amount))
         }
     }
 
-    // Minter
-    //
-    // Resource object that token admin accounts can hold to mint new tokens.
-    //
-    pub resource Minter {
-
-        // the amount of tokens that the minter is allowed to mint
-        pub var allowedAmount: UFix64
-
-        // mintTokens
-        //
-        // Function that mints new tokens, adds them to the total supply,
-        // and returns them to the calling context.
-        //
-        pub fun mintTokens(amount: UFix64): @FlowToken.Vault {
-            pre {
-                amount > UFix64(0): "Amount minted must be greater than zero"
-                amount <= self.allowedAmount: "Amount minted must be less than the allowed amount"
-            }
-            FlowToken.totalSupply = FlowToken.totalSupply + amount
-            self.allowedAmount = self.allowedAmount - amount
-            emit TokensMinted(amount: amount)
-            return <-create Vault(balance: amount)
-        }
-
-        init(allowedAmount: UFix64) {
-            self.allowedAmount = allowedAmount
-        }
-    }
-    
-    // Burner
-    //
-    // Resource object that token admin accounts can hold to burn tokens.
-    //
-    pub resource Burner {
-
-        // burnTokens
-        //
-        // Function that destroys a Vault instance, effectively burning the tokens.
-        //
-        // Note: the burned tokens are automatically subtracted from the 
-        // total supply in the Vault destructor.
-        //
-        pub fun burnTokens(from: @FungibleToken.Vault) {
-            let vault <- from as! @FlowToken.Vault
-            let amount = vault.balance
-            destroy vault
-            emit TokensBurned(amount: amount)
-        }
-    }
-
+    // The init function for the contract. All fields in the contract must
+    // be initialized at deployment. This is just an example of what
+    // an implementation could do in the init function. The numbers are arbitrary.
     init() {
-        self.totalSupply = 1000.0
+        self.totalSupply = 1000000.0
 
-        // Create the Vault with the total supply of tokens and save it in storage
-        //
+        // create the Vault with the initial balance and put it in storage
+        // account.save saves an object to the specified `to` path
+        // The path is a literal path that consists of a domain and identifier
+        // The domain must be `storage`, `private`, or `public`
+        // the identifier can be any name
         let vault <- create Vault(balance: self.totalSupply)
-        self.account.save(<-vault, to: /storage/FlowTokenVault)
+        self.account.save(<-vault, to: /storage/FlowVault)
 
-        // Create a public capability to the stored Vault that only exposes
-        // the `deposit` method through the `Receiver` interface
-        //
-        self.account.link<&{FungibleToken.Receiver}>(
-            /public/FlowTokenReceiver,
-            target: /storage/FlowTokenVault
-        )
+        // Create a new MintAndBurn resource and store it in account storage
+        self.account.save(<-create VaultMinter(), to: /storage/FlowMinter)
 
-        // Create a public capability to the stored Vault that only exposes
-        // the `balance` field through the `Balance` interface
-        //
-        self.account.link<&FlowToken.Vault{FungibleToken.Balance}>(
-            /public/FlowTokenBalance,
-            target: /storage/FlowTokenVault
-        )
-
-        let admin <- create Administrator()
-        self.account.save(<-admin, to: /storage/FlowTokenAdmin)
-
-        // Emit an event that shows that the contract was initialized
-        emit TokensInitialized(initialSupply: self.totalSupply)
+        // Create a private capability link for the Minter
+        // Capabilities can be used to create temporary references to an object
+        // so that callers can use the reference to access fields and functions
+        // of the objet.
+        // 
+        // The capability is stored in the /private/ domain, which is only
+        // accesible by the owner of the account
+        self.account.link<&VaultMinter>(/private/Minter, target: /storage/FlowMinter)
     }
 }
+ 
