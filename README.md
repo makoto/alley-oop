@@ -2,7 +2,7 @@
 
 Minimum Automated Market Maker(AMM) on Flow Blockchain
 
-![](https://giphy.com/embed/l0HlTgeWIqq5wZMKA)
+![](https://media.giphy.com/media/l0HlTgeWIqq5wZMKA/giphy-downsized.gif)
 
 ## Reference
 
