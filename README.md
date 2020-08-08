@@ -1,6 +1,8 @@
-# MVP Dex
+# alley-oop
 
-The minimum viable exchange (aka UniSwap) clone  on flow.
+Minimum Automated Market Maker(AMM) on Flow Blockchain
+
+![](https://giphy.com/embed/l0HlTgeWIqq5wZMKA)
 
 ## Reference
 
@@ -10,14 +12,14 @@ https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90
 
 - [Flow playground](https://play.onflow.org/ac8f1629-2f92-4559-b456-1b5401eab111)
 
-## Setup
+## How to run the demo on the Flow playground
 
-- Deploy FlowToken as second account    (0x01)
-- Deploy BaloonToken as third account   (0x02)
-- Deploy Dex as forth account           (0x03)
+- Deploy FlowToken as the first(0x01) account
+- Deploy BaloonToken as the second(0x02) account
+- Deploy Dex as the third(0x03) account
 - Run Transaction1.cdc with all accounts
 - Run Transaction2.cdc with all accounts
-- Run Transaction2.cdc with accoun 0x01
+- Run Transaction2.cdc with the first account(0x01)
 - Run Script1.cdc to run report
 
 ## Todo
