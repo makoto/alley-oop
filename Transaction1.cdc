@@ -1,6 +1,6 @@
 // Transaction1.cdc
 
-import FlowToken from 0x01
+import FlowToken from 0x01cf0e2f2f715450
 
 // This transaction creates the followings
 // At prepare
@@ -54,7 +54,7 @@ transaction {
 
     execute {
       // Mint 30 tokens and deposit them into the recipient's Vault
-      var tokens = [100,100,100,100]
+      var tokens = [10000,10000,10000,10000]
       var a = 0
       log("Mint tokens")
       while a < tokens.length {

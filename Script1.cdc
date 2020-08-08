@@ -1,8 +1,9 @@
 // Script1.cdc
 
-import FlowToken from 0x01 
-import BaloonToken from 0x02
-// This script reads the Vault balances of two accounts.
+import FlowToken from 0x01cf0e2f2f715450
+import BaloonToken from 0x179b6b1cb6755e31
+import Dex from 0xf3fcd2c1a78f5eee
+
 pub fun main() {
     // Get the accounts' public account objects
     let acct1 = getAccount(0x01)
@@ -40,6 +41,11 @@ pub fun main() {
                             ?? panic("Could not borrow a reference to the acct4 receiver")
 
 
+    let dexRef =  acct1.getCapability(/public/DexPool)!
+                            .borrow<&Dex.Pool{Dex.PoolPublic}>()
+                            ?? panic("Could not borrow a reference to the acct1 receiver")
+
+
     // Use optional chaining to read and log balance fields
     log("***Flow")
     log("Account 1 Balance")
@@ -61,4 +67,11 @@ pub fun main() {
     log("Account 4 Balance")
     log(acct4BaloonReceiverRef.balance)
 
+    log("dexRef")
+    log("dexRef")
+    log(dexRef.xLiquidity())
+    log(dexRef.yLiquidity())
+    log(dexRef.xPrice())
+    log(dexRef.yPrice())
 }
+ 
