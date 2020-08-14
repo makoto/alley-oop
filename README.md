@@ -22,6 +22,21 @@ https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90
 - Run Transaction2.cdc with the first account(0x01)
 - Run Script1.cdc to run report
 
+
+## Go tooling
+
+### Initialisation
+
+```
+go mod init alley-oop
+```
+
+### Running deployment contract
+
+```
+go run run.go
+```
+
 ## Todo
 
 - Refactor to inherit more generalised [Funggible token]() so that I don't have to copy&paste each fungible token
