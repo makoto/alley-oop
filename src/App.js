@@ -13,6 +13,10 @@ import UserInfo from './demo/UserInfo'
 import SendTransaction from './demo/SendTransaction'
 import DeployContract from './demo/DeployContract'
 import InteractWithContract from './demo/InteractWithContract'
+import GetLiquidity from './dex/GetLiquidity'
+import CheckPrice from './dex/CheckPrice'
+import GetBalance from './dex/GetBalance'
+// import MintFlowToken from './dex/MintFlowToken'
 
 const Wrapper = styled.div`
   font-size: 13px;
@@ -22,12 +26,16 @@ const Wrapper = styled.div`
 function App() {
   return (
     <Wrapper>
+      <h1>Alley oop DEX</h1>
       <Section>
-        <Header>READ from FCL</Header>
+        {/* <Header>READ from FCL</Header>
         <GetLatestBlock />
         <GetAccount />
         <ScriptOne />
-        <ScriptTwo />
+        <ScriptTwo /> */}
+        <GetLiquidity />
+        <CheckPrice />
+        <GetBalance />
       </Section>
 
       <Section>
