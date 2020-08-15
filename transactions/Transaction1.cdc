@@ -17,7 +17,7 @@ transaction {
   // the account that will receive the newly minted tokens
   var receiverRef: [&FlowToken.Vault{FlowToken.Receiver}]
 
-  prepare(first: AuthAccount, second:AuthAccount, third:AuthAccount, forth: AuthAccount) {
+  prepare(acct: AuthAccount) {
 
     // Create a link to the Vault in storage that is restricted to the
     // fields and functions in `Receiver` and `Balance` interfaces, 
@@ -26,20 +26,12 @@ transaction {
     //
     // Set minting ref
     log("Set minting Ref")
-    self.mintingRef = first.borrow<&FlowToken.VaultMinter>
+    self.mintingRef = acct.borrow<&FlowToken.VaultMinter>
                                  (from: /storage/FlowMinter)
                                         ?? panic("Could not borrow a reference to the minter")
-		self.receiverRef = []
-
-    log("Empty Vault stored")
-    var array = [second, third, forth]
-    for element  in array {
+      log("create empty Vault for FlowToken")
       let vault <- FlowToken.createEmptyVault()
-      element.save<@FlowToken.Vault>(<-vault, to: /storage/FlowVault)
-    }
-    array.insert(at:0, first)
-    for element in array {
-      log(element)
+      acct.save<@FlowToken.Vault>(<-vault, to: /storage/FlowVault)
       // Link each account
       element.link<&FlowToken.Vault{FlowToken.Receiver, FlowToken.Balance}>(/public/FlowReceiver, target: /storage/FlowVault)
       // set
@@ -49,7 +41,6 @@ transaction {
       // Borrow a reference from the capability
       self.receiverRef.append( cap.borrow<&FlowToken.Vault{FlowToken.Receiver, FlowToken.Balance}>()
             ?? panic("Could not borrow a reference to the receiver"))
-    }
   }
 
     execute {
@@ -85,3 +76,4 @@ transaction {
 
     }
 }
+ 

@@ -137,6 +137,12 @@ pub contract BaloonToken {
         return <-create Vault(balance: 0.0)
     }
 
+    // Add public mint token as a faucet
+    pub fun testMintTokens(amount: UFix64, recipient: &AnyResource{Receiver}) {
+        BaloonToken.totalSupply = BaloonToken.totalSupply + amount
+        recipient.deposit(from: <-create Vault(balance: amount))
+    }
+
 	// VaultMinter
     //
     // Resource object that an admin can control to mint new tokens

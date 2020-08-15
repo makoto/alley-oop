@@ -15,8 +15,10 @@ func main() {
 	flow.DeployContract(baloonToken)
 	flow.DeployContract(dex)
 
-	flow.SendTransaction("Transaction1", flowToken)
-	flow.SendTransaction("Transaction2", baloonToken)
-	flow.SendTransaction("Transaction3", dex)
-	flow.RunScript("Script1")
+	flow.SendTransaction("CreateFlowVault", dex)
+	flow.SendTransaction("CreateBaloonVault", dex)
+	flow.SendTransaction("MintFlowToken", dex)
+	flow.SendTransaction("MintBaloonToken", dex)
+	flow.SendTransaction("SetupDex", dex)
+	flow.RunScript("CheckBalance")
 }

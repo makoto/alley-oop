@@ -22,13 +22,19 @@ https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90
 - Run Transaction2.cdc with the first account(0x01)
 - Run Script1.cdc to run report
 
+## Deploying to folow emulator
 
-## Go tooling
 
 ### Initialisation
 
 ```
 go mod init alley-oop
+```
+
+### Start up go emulator
+
+```
+flow emulator start -v
 ```
 
 ### Running deployment contract
@@ -48,3 +54,4 @@ go run run.go
 
 - How do I change so that it allows to list any fungible tokens?
 - Is the current xVault/yVault secure? (= can the contract owner drain the fund?)
+ 
