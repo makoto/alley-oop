@@ -1,0 +1,32 @@
+{
+  "name": "alley-oop",
+  "version": "0.0.1",
+  "dependencies": {
+    "@onflow/fcl": "0.0.44",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "styled-components": "^5.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "dev-wallet": "PK=6933b0c557a30513adb402be741464601667f898e61017e58a0be94f593e0f6f fcl-wallet"
+  },
+  "devDependencies": {
+    "@onflow/dev-wallet": "^0.0.8"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
