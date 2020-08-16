@@ -31,17 +31,29 @@ https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90
 go mod init alley-oop
 ```
 
-### Start up go emulator
+### Start up server
+
+Run each command in the different tab
 
 ```
 flow emulator start -v
 ```
 
-### Running deployment contract
+```
+yarn dev-wallet
+```
+
 
 ```
 go run run.go
 ```
+
+```
+yarn start
+```
+
+After the frontend server is up, open the browser at https://localhost:3000
+
 
 ## Todo
 
