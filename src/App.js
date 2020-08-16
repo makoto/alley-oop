@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from "react"
 import styled from 'styled-components'
 
 import Section from './components/Section'
@@ -16,7 +16,11 @@ import InteractWithContract from './demo/InteractWithContract'
 import GetLiquidity from './dex/GetLiquidity'
 import CheckPrice from './dex/CheckPrice'
 import GetBalance from './dex/GetBalance'
+import CheckVault from './dex/CheckVault'
+import SetupVault from './dex/SetupVault'
+
 // import MintFlowToken from './dex/MintFlowToken'
+import GlobalContext, {Provider} from './Global'
 
 const Wrapper = styled.div`
   font-size: 13px;
@@ -24,6 +28,7 @@ const Wrapper = styled.div`
 `;
 
 function App() {
+  const context = useContext(GlobalContext);
   return (
     <Wrapper>
       <h1>Alley oop DEX</h1>
@@ -33,14 +38,23 @@ function App() {
         <GetAccount />
         <ScriptOne />
         <ScriptTwo /> */}
+        <Authenticate />
+
         <GetLiquidity />
-        <CheckPrice />
-        <GetBalance />
+
+        {context.user && context.user.addr ? (
+          <>
+            <CheckVault />
+            {/* <GetBalance /> */}
+            <SetupVault />
+          </>
+        ) : (
+          ''
+        )}
       </Section>
 
       <Section>
         <Header>FCL wallet interactions</Header>
-        <Authenticate />
         <UserInfo />
         <SendTransaction />
         <DeployContract />

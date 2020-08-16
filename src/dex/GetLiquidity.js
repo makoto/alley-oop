@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import * as fcl from "@onflow/fcl"
 
 import Card from '../components/Card'
@@ -16,35 +16,33 @@ pub fun main() :[UFix64] {
     let dexRef =  acct1.getCapability(/public/DexPool)!
                             .borrow<&Dex.Pool{Dex.PoolPublic}>()
                             ?? panic("Could not borrow a reference to the acct1 receiver")
-    return [dexRef.xLiquidity(), dexRef.yLiquidity()]
+    return [dexRef.xLiquidity(), dexRef.yLiquidity(), dexRef.xPrice(), dexRef.yPrice()]
 }
 `
 
 export default function ScriptOne() {
   const [data, setData] = useState(null)
 
-  const runScript = async (event) => {
-    event.preventDefault()
-
+  const runScript = async () => {
     const response = await fcl.send([
       fcl.script(scriptOne),
     ])
     
     setData(await fcl.decode(response))
   }
-
+  useEffect(() =>
+    runScript()
+  , [])
   return (
     <Card>
-      <Header>Get current liquidity</Header>
+      <Header>Current liquidity</Header>
       
-      <Code>{scriptOne}</Code>
-      
-      <button onClick={runScript}>Run Script</button>
-
       {data && (
-        <Code>
-          {JSON.stringify(data, null, 2)}
-        </Code>
+        <ul>
+          <li>Liquidity: Flow Token:{data[0]} - Baloon Token:{data[1]} pair </li>
+          <li>1 Flow = {data[2]} Baloon </li>
+          <li>1 Baloon = {data[3]} Flow </li>
+        </ul>
       )}
     </Card>
   )
