@@ -18,6 +18,8 @@ import CheckPrice from './dex/CheckPrice'
 import GetBalance from './dex/GetBalance'
 import CheckVault from './dex/CheckVault'
 import SetupVault from './dex/SetupVault'
+import BuyBaloon from './dex/BuyBaloon'
+import SellBaloon from './dex/SellBaloon'
 
 // import MintFlowToken from './dex/MintFlowToken'
 import GlobalContext, {Provider} from './Global'
@@ -45,7 +47,11 @@ function App() {
           <>
             <CheckVault />
             {context.vault ? (
-              <GetBalance />
+              <>
+                <GetBalance />
+                <BuyBaloon />
+                <SellBaloon />
+              </>
             ):(
               <SetupVault />
             )}

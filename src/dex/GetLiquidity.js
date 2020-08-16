@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, useContext} from "react"
 import * as fcl from "@onflow/fcl"
 
 import Card from '../components/Card'
 import Header from '../components/Header'
-import Code from '../components/Code'
+import GlobalContext from '../Global'
 
 const scriptOne = `\
 import FlowToken from 0x01cf0e2f2f715450
@@ -22,17 +22,21 @@ pub fun main() :[UFix64] {
 
 export default function ScriptOne() {
   const [data, setData] = useState(null)
-
+  const context = useContext(GlobalContext);
+  const {update} = context
   const runScript = async () => {
     const response = await fcl.send([
       fcl.script(scriptOne),
     ])
     
-    setData(await fcl.decode(response))
+    let data = await fcl.decode(response)
+    console.log('***', {data})
+    setData(data)
   }
-  useEffect(() =>
+  useEffect(() => {
     runScript()
-  , [])
+  }
+  , [update])
   return (
     <Card>
       <Header>Current Market</Header>

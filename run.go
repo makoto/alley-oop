@@ -10,7 +10,6 @@ const dex = "Dex"
 
 func main() {
 	flow := tooling.NewFlowConfigLocalhost()
-
 	flow.DeployContract(flowToken)
 	flow.DeployContract(baloonToken)
 	flow.DeployContract(dex)
@@ -20,5 +19,6 @@ func main() {
 	flow.SendTransaction("MintFlowToken", dex)
 	flow.SendTransaction("MintBaloonToken", dex)
 	flow.SendTransaction("SetupDex", dex)
+	flow.SendTransaction("BuyBaloon", dex)
 	flow.RunScript("CheckBalance")
 }

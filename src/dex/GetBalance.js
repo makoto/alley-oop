@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react"
+import React, {useState, useContext, useEffect} from "react"
 import * as fcl from "@onflow/fcl"
 
 import Card from '../components/Card'
@@ -29,10 +29,12 @@ pub fun main() :[UFix64] {
 export default function ScriptOne() {
   const [data, setData] = useState(null)
   const context = useContext(GlobalContext);
-  const address = context.user && context.user.addr
+  // const address = context.user && context.user.addr
+  const {user:{addr:address}} = context
+  const {update} = context
   const scriptOne = getScript(address)
   const runScript = async (event) => {
-    event.preventDefault()
+    event && event.preventDefault()
 
     const response = await fcl.send([
       fcl.script(scriptOne),
@@ -40,12 +42,14 @@ export default function ScriptOne() {
     
     setData(await fcl.decode(response))
   }
+  useEffect(() => {
+    runScript()
+  }, [update])
+
 
   return (
     <Card>
       <Header>Your token holdings</Header>
-      <button onClick={runScript}>Run Script</button>
-
       {data && (
         <ul>
           <li>{data[0]} Flow tokens </li>
