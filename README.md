@@ -22,8 +22,7 @@ https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90
 - Run Transaction2.cdc with the first account(0x01)
 - Run Script1.cdc to run report
 
-## Deploying to folow emulator
-
+## How to run locally
 
 ### Initialisation
 
