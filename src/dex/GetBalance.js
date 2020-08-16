@@ -9,18 +9,19 @@ import GlobalContext from '../Global'
 const getScript = (address) => ( `\
 import FlowToken from 0x01cf0e2f2f715450
 import BaloonToken from 0x179b6b1cb6755e31
-import Dex from 0xf3fcd2c1a78f5eee
 
 pub fun main() :[UFix64] {
   // Get the accounts' public account objects
-  let acct1 = getAccount(0xf3fcd2c1a78f5eee)
+  let acct1 = getAccount(0x${address})
   let acct1FlowReceiverRef = acct1.getCapability(/public/FlowReceiver)!
                           .borrow<&FlowToken.Vault{FlowToken.Balance}>()
-                          ?? panic("Could not borrow a reference to the acct1 receiver")
+                          ?? panic("Could not borrow a reference to the acct1 Flow  receiver")
 
-  let flowCap = acct1.getCapability(/public/FlowReceiver)!
+  let acct1BaloonReceiverRef = acct1.getCapability(/public/BaloonReceiver)!
+                          .borrow<&BaloonToken.Vault{BaloonToken.Balance}>()
+                          ?? panic("Could not borrow a reference to the acct1 Baloon receiver")
 
-  return [acct1FlowReceiverRef.balance]
+  return [acct1FlowReceiverRef.balance, acct1BaloonReceiverRef.balance]
 }
 `
 )
@@ -42,17 +43,16 @@ export default function ScriptOne() {
 
   return (
     <Card>
-      <Header>Get Balance1</Header>
-      
-      <Code>{scriptOne}</Code>
-      
+      <Header>Your token holdings</Header>
       <button onClick={runScript}>Run Script</button>
 
       {data && (
-        <Code>
-          {JSON.stringify(data, null, 2)}
-        </Code>
+        <ul>
+          <li>{data[0]} Flow tokens </li>
+          <li>{data[1]} Baloon tokens </li>
+        </ul>
       )}
+
     </Card>
   )
 }

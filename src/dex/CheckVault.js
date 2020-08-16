@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react"
+import React, {useState, useContext, useEffect} from "react"
 import * as fcl from "@onflow/fcl"
 import GlobalContext from '../Global'
 
@@ -9,13 +9,13 @@ import Code from '../components/Code'
 const getScript = (address) => ( `\
 import FlowToken from 0x01cf0e2f2f715450
 
-pub fun main() :[Bool] {
+pub fun main() :Bool {
   // Get the accounts' public account objects
   let acct1 = getAccount(0x${address})
 
   let flowCap = acct1.getCapability(/public/FlowReceiver)!
 
-  return [flowCap.check<&FlowToken.Vault{FlowToken.Receiver}>()]
+  return flowCap.check<&FlowToken.Vault{FlowToken.Receiver}>()
 }
 `)
 
@@ -25,29 +25,22 @@ export default function ScriptOne() {
   const address = context.user && context.user.addr
   const scriptOne = getScript(address)
 
-  const runScript = async (event) => {
-    event.preventDefault()
+  const runScript = async () => {
 
     const response = await fcl.send([
       fcl.script(scriptOne),
     ])
-    
-    setData(await fcl.decode(response))
+    const data = await fcl.decode(response)
+    setData(data)
+    console.log('***CheckVault', {data})
+    context.setVault(data)
   }
+  useEffect(async () => {
+    runScript()
+  }
+  , [])
 
   return (
-    <Card>
-      <Header>Check Vault for {address}</Header>
-      
-      <Code>{scriptOne}</Code>
-      
-      <button onClick={runScript}>Run Script</button>
-
-      {data && (
-        <Code>
-          {JSON.stringify(data, null, 2)}
-        </Code>
-      )}
-    </Card>
+    <></>
   )
 }

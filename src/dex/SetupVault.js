@@ -8,12 +8,13 @@ import GlobalContext from '../Global'
 
 const simpleTransaction = `\
 import FlowToken from 0x01cf0e2f2f715450
+import BaloonToken from 0x179b6b1cb6755e31
 
 // This transaction configures an account to store and receive tokens defined by
 // the FlowToken contract.
 transaction {
   var address: Address
-  // var receiverRef: [&FlowToken.Vault{FlowToken.Receiver}]
+  var receiverRef: &FlowToken.Vault{FlowToken.Receiver}
 
   prepare(acct: AuthAccount) {
     self.address = acct.address
@@ -28,7 +29,30 @@ transaction {
     // Create a public Receiver capability to the Vault
     acct.link<&FlowToken.Vault{FlowToken.Receiver, FlowToken.Balance}>(/public/FlowReceiver, target: /storage/FlowVault)
 
+    let vaultB <- BaloonToken.createEmptyVault()
+
+    // Store the vault in the account storage
+    acct.save<@BaloonToken.Vault>(<-vaultB, to: /storage/BaloonVault)
+
+    log("Empty Vault stored")
+
+    // Create a public Receiver capability to the Vault
+    acct.link<&BaloonToken.Vault{BaloonToken.Receiver, BaloonToken.Balance}>(/public/BaloonReceiver, target: /storage/BaloonVault)
+
     log("References created")
+
+    log("References created")
+    let cap = acct.getCapability(/public/FlowReceiver)!
+
+    // Borrow a reference from the capability
+    self.receiverRef = cap.borrow<&FlowToken.Vault{FlowToken.Receiver}>()
+            ?? panic("Could not borrow a reference to the receiver")
+    log("Receiver borrowed")
+  }
+
+  execute {
+    FlowToken.testMintTokens(amount: UFix64(1000), recipient: self.receiverRef)
+    log("1000 tokens minted and deposited to account 0x02")
   }
 }
 `
@@ -57,7 +81,8 @@ const SetupVault = () => {
           fcl.currentUser().authorization,
         ]),
         fcl.payer(fcl.currentUser().authorization),
-        fcl.ref(block.id)
+        fcl.ref(block.id),
+        fcl.limit(100),
       ])
 
       setStatus("Transaction sent, waiting for confirmation")

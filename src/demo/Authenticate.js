@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useContext} from "react"
 import styled from "styled-components"
 import * as fcl from "@onflow/fcl"
+import GlobalContext from '../Global'
 
 import Card from '../components/Card'
 
@@ -45,11 +46,15 @@ const UserProfile = ({ user }) => (
 
 const CurrentUser = () => {
   const [user, setUser] = useState({})
+  const context = useContext(GlobalContext);
 
   useEffect(() =>
     fcl
       .currentUser()
-      .subscribe(user => setUser({...user}))
+      .subscribe(user => {
+        setUser({...user})
+        context.setUser({...user})
+      })
   , [])
 
   return (

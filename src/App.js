@@ -38,27 +38,21 @@ function App() {
         <GetAccount />
         <ScriptOne />
         <ScriptTwo /> */}
-        <Authenticate />
-
         <GetLiquidity />
 
+        <Authenticate />
         {context.user && context.user.addr ? (
           <>
             <CheckVault />
-            {/* <GetBalance /> */}
-            <SetupVault />
+            {context.vault ? (
+              <GetBalance />
+            ):(
+              <SetupVault />
+            )}
           </>
         ) : (
           ''
         )}
-      </Section>
-
-      <Section>
-        <Header>FCL wallet interactions</Header>
-        <UserInfo />
-        <SendTransaction />
-        <DeployContract />
-        <InteractWithContract />
       </Section>
     </Wrapper>
   );

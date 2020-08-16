@@ -35,13 +35,13 @@ export default function ScriptOne() {
   , [])
   return (
     <Card>
-      <Header>Current liquidity</Header>
-      
+      <Header>Current Market</Header>
+      <h2>🎈token</h2>
       {data && (
         <ul>
-          <li>Liquidity: Flow Token:{data[0]} - Baloon Token:{data[1]} pair </li>
-          <li>1 Flow = {data[2]} Baloon </li>
-          <li>1 Baloon = {data[3]} Flow </li>
+          <li>Liquidity: {data[0]} Flow Token & {data[1]} 🎈 Token</li>
+          <li>1 Flow = {data[2]} 🎈 </li>
+          <li>1 🎈 = {data[3]} Flow </li>
         </ul>
       )}
     </Card>
