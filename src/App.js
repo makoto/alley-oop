@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import Section from './components/Section'
 import Header from './components/Header'
-
+import Curve from './components/Curve.js'
 import GetLatestBlock from './demo/GetLatestBlock'
 import GetAccount from './demo/GetAccount'
 import ScriptOne from "./demo/ScriptOne"
@@ -34,7 +34,7 @@ function App() {
   return (
     <Wrapper>
       <h1>Alley oop DEX</h1>
-      <Section>
+      <Section style={{width:'50%'}}>
         {/* <Header>READ from FCL</Header>
         <GetLatestBlock />
         <GetAccount />
@@ -59,6 +59,16 @@ function App() {
         ) : (
           ''
         )}
+        <div style={{position:"fixed",right:0,top:50,padding:10}}>
+          <Curve
+            addingEth={0}
+            addingToken={0}
+            ethReserve={100}
+            tokenReserve={100}
+            width={500} height={500}
+          />
+        </div>
+
       </Section>
     </Wrapper>
   );
