@@ -12,20 +12,20 @@ const Curve = (props) => {
     const width = canvas.width ;
     const height = canvas.height ;
 
-    if (canvas.getContext && props.ethReserve && props.tokenReserve) {
+    if (canvas.getContext && props.flowReserve && props.baloonReserve) {
 
-      const k = props.ethReserve * props.tokenReserve
+      const k = props.flowReserve * props.baloonReserve
 
       const ctx = canvas.getContext('2d');
       ctx.clearRect(0,0,width,height);
 
-      let maxX = k/(props.ethReserve/4)
+      let maxX = k/(props.flowReserve/4)
       let minX = 0
 
-      if(props.addingEth||props.addingToken){
-        maxX = k/(props.ethReserve*0.4)
-        //maxX = k/(props.ethReserve*0.8)
-        minX = k/Math.max(0,(500-props.ethReserve))
+      if(props.addingFlow||props.addingBaloon){
+        maxX = k/(props.flowReserve*0.4)
+        //maxX = k/(props.flowReserve*0.8)
+        minX = k/Math.max(0,(500-props.flowReserve))
       }
 
       const maxY = maxX * height / width;
@@ -70,9 +70,9 @@ const Curve = (props) => {
 
       ctx.lineWidth = 1 ;
 
-      if(props.addingEth){
+      if(props.addingFlow){
 
-        let newEthReserve = props.ethReserve + parseFloat(props.addingEth)
+        let newEthReserve = props.flowReserve + parseFloat(props.addingFlow)
 
         ctx.fillStyle = "#bbbbbb";
         ctx.beginPath();
@@ -80,21 +80,21 @@ const Curve = (props) => {
         ctx.fill();
 
         ctx.strokeStyle = "#009900";
-        drawArrow(ctx,plotX(props.ethReserve),plotY(props.tokenReserve),plotX(newEthReserve),plotY(props.tokenReserve))
+        drawArrow(ctx,plotX(props.flowReserve),plotY(props.baloonReserve),plotX(newEthReserve),plotY(props.baloonReserve))
 
         ctx.fillStyle = "#000000";
-        ctx.fillText(""+props.addingEth+" ETH input", plotX(props.ethReserve)+textSize, plotY(props.tokenReserve)-textSize);
+        ctx.fillText(""+props.addingFlow+" Flow input", plotX(props.flowReserve)+textSize, plotY(props.baloonReserve)-textSize);
 
         ctx.strokeStyle = "#990000";
-        drawArrow(ctx,plotX(newEthReserve),plotY(props.tokenReserve),plotX(newEthReserve),plotY(k/(newEthReserve)))
+        drawArrow(ctx,plotX(newEthReserve),plotY(props.baloonReserve),plotX(newEthReserve),plotY(k/(newEthReserve)))
 
-        let amountGained =  Math.round(10000 * ( props.addingEth * props.tokenReserve ) / ( newEthReserve ) ) /10000
+        let amountGained =  Math.round(10000 * ( props.addingFlow * props.baloonReserve ) / ( newEthReserve ) ) /10000
         ctx.fillStyle = "#000000";
         ctx.fillText(""+(amountGained)+" 🎈 output (-0.3% fee)", plotX(newEthReserve)+textSize,plotY(k/(newEthReserve)));
 
-      }else if(props.addingToken){
+      }else if(props.addingBaloon){
 
-        let newTokenReserve = props.tokenReserve + parseFloat(props.addingToken)
+        let newTokenReserve = props.baloonReserve + parseFloat(props.addingBaloon)
 
         ctx.fillStyle = "#bbbbbb";
         ctx.beginPath();
@@ -103,24 +103,24 @@ const Curve = (props) => {
 
         //console.log("newTokenReserve",newTokenReserve)
         ctx.strokeStyle = "#990000";
-        drawArrow(ctx,plotX(props.ethReserve),plotY(props.tokenReserve),plotX(props.ethReserve),plotY(newTokenReserve))
+        drawArrow(ctx,plotX(props.flowReserve),plotY(props.baloonReserve),plotX(props.flowReserve),plotY(newTokenReserve))
 
         ctx.fillStyle = "#000000";
-        ctx.fillText(""+(props.addingToken)+" 🎈 input", plotX(props.ethReserve)+textSize,plotY(props.tokenReserve));
+        ctx.fillText(""+(props.addingBaloon)+" 🎈 input", plotX(props.flowReserve)+textSize,plotY(props.baloonReserve));
 
         ctx.strokeStyle = "#009900";
-        drawArrow(ctx,plotX(props.ethReserve),plotY(newTokenReserve),plotX(k/(newTokenReserve)),plotY(newTokenReserve))
+        drawArrow(ctx,plotX(props.flowReserve),plotY(newTokenReserve),plotX(k/(newTokenReserve)),plotY(newTokenReserve))
 
-        let amountGained =  Math.round(10000 * ( props.addingToken * props.ethReserve ) / ( newTokenReserve ) ) /10000
+        let amountGained =  Math.round(10000 * ( props.addingBaloon * props.flowReserve ) / ( newTokenReserve ) ) /10000
         //console.log("amountGained",amountGained)
         ctx.fillStyle = "#000000";
-        ctx.fillText(""+amountGained+" ETH output (-0.3% fee)", plotX(k/(newTokenReserve))+textSize,plotY(newTokenReserve)-textSize);
+        ctx.fillText(""+amountGained+" Flow output (-0.25% fee)", plotX(k/(newTokenReserve))+textSize,plotY(newTokenReserve)-textSize);
 
       }
 
       ctx.fillStyle = "#0000FF"
       ctx.beginPath();
-      ctx.arc(plotX(props.ethReserve),plotY(props.tokenReserve), 5, 0, 2 * Math.PI);
+      ctx.arc(plotX(props.flowReserve),plotY(props.baloonReserve), 5, 0, 2 * Math.PI);
       ctx.fill();
 
     }
@@ -135,10 +135,10 @@ const Curve = (props) => {
         {...props}
       />
       <div style={{position:'absolute',left:"20%",bottom:-20}}>
-        -- ETH Reserve -->
+        -- Flow Token Reserve -->
       </div>
       <div style={{position:'absolute',left:-20,bottom:"20%",transform:"rotate(-90deg)",transformOrigin:"0 0"}}>
-        -- Token Reserve -->
+        -- Baloon Token Reserve -->
       </div>
     </div>
   );

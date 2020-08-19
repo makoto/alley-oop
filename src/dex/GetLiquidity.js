@@ -30,8 +30,10 @@ export default function ScriptOne() {
     ])
     
     let data = await fcl.decode(response)
-    console.log('***', {data})
+    console.log('***', {data, context})
     setData(data)
+    context && context.setFlowReserve(data[0])
+    context && context.setBaloonReserve(data[1])
   }
   useEffect(() => {
     runScript()

@@ -40,7 +40,6 @@ const BuyBaloon = () => {
   const address = context.user && context.user.addr
   const {setUpdate, update} = context
   const simpleTransaction = getSimpleTransaction(amount)
-
   const runTransaction = async (event) => {
     event.preventDefault()
     
@@ -88,8 +87,9 @@ const BuyBaloon = () => {
 
   const updateAmount = (event) => {
     event.preventDefault();
-
-    setAmount(event.target.value)
+    const value = event.target.value
+    setAmount(value)
+    context.setAddingFlow(value)
   }
 
 

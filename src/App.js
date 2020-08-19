@@ -61,10 +61,10 @@ function App() {
         )}
         <div style={{position:"fixed",right:0,top:50,padding:10}}>
           <Curve
-            addingEth={0}
-            addingToken={0}
-            ethReserve={100}
-            tokenReserve={100}
+            addingFlow={context.addingFlow || 0}
+            addingBaloon={context.addingBaloon || 0}
+            flowReserve={context.flowReserve}
+            baloonReserve={context.baloonReserve}
             width={500} height={500}
           />
         </div>

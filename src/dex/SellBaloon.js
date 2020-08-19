@@ -88,8 +88,9 @@ const SellBaloon = () => {
   }
   const updateAmount = (event) => {
     event.preventDefault();
-
-    setAmount(event.target.value)
+    const value = event.target.value
+    setAmount(value)
+    context.setAddingBaloon(value)
   }
 
   return (
