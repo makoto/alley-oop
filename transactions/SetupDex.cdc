@@ -11,13 +11,14 @@ transaction {
     let baloonVault = acct.borrow<&{BaloonToken.Receiver, BaloonToken.Provider, BaloonToken.Balance}>(from: /storage/BaloonVault)
             ?? panic("Could not borrow a reference to the owner's vault")
 
-    // Create a new Sale object, 
-    // initializing it with the reference to the owner's vault
+    // Create a new Dex object, 
+    // initializing it with the references to the owner's token vault pair
     let dex <- Dex.createDex(
       x: <- flowVault.withdraw(amount: UFix64(100)),
       y: <- baloonVault.withdraw(amount: UFix64(100))
     )
 
+    // Example of exchanging tokens
     // dex.XToY(
     //   from: <- flowVault.withdraw(amount: UFix64(1)),
     //   to:baloonVault
@@ -31,10 +32,6 @@ transaction {
   }
 
   execute {
-    // 
-    // dex2 = Dex.new(10,500)
-    // dex2.x_to_y(1)
-    // dex2.y_to_x(50)
   }
 
   post {

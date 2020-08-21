@@ -4,9 +4,12 @@ Minimum Automated Market Maker(AMM) on Flow Blockchain
 
 ![](https://media.giphy.com/media/l0HlTgeWIqq5wZMKA/giphy-downsized.gif)
 
-## Reference
+## A quick summary
 
-https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90
+Alley-oop is a decentralised exchange which allows you to swap tokens based on the price calculated by smartcontract without counter party.
+
+- [Youtube video](https://www.youtube.com/watch?v=TRjy-rEirIo)
+- [Google Slide](https://docs.google.com/presentation/d/1X3lBUxAib1h2toi979tlVaSrqDdALxItqXvX5e6MZso/edit?usp=sharing)
 
 ## Flow playground
 
@@ -54,15 +57,17 @@ yarn start
 After the frontend server is up, open the browser at https://localhost:3000
 
 
-## Todo
+## Current limitation and potential future addtion
 
-- Refactor to inherit more generalised [Funggible token]() so that I don't have to copy&paste each fungible token
-- Allow anyone to deposit/withdraw liquidity
-- Refactor to combine YtoX and XtoY into single function (as they are almost identical)
-- Add Frontend (if I get enough time)
+### Limitations
 
-## Open Question.
+- For the demo purpose, both tokens allow anyone to mint token which needs to be removed for production use.
+- The front-end chart is the fork of [Minimum viable exchange](https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90) tutorial post by Austin Griffith. The curve was mostly there for educational purpose and should be taken out for production use.
+- At source code level, Basketball token are named Baloon token following the example of the Minimum viable exchange
 
-- How do I change so that it allows to list any fungible tokens?
-- Is the current xVault/yVault secure? (= can the contract owner drain the fund?)
- 
+### Future addition
+
+- Ability for anyone to add a pool
+- Ability to list any token
+- Ability to mint new token to allow crowd sale
+- Ability to list non fungible tokens as well as fungible tokens

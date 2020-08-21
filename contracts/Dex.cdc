@@ -1,12 +1,10 @@
 import FlowToken from 0x01cf0e2f2f715450
 import BaloonToken from 0x179b6b1cb6755e31
 
-
+// Dex contract is the port of the solidity version created by Austin Griffith
+// https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90
 pub contract Dex {
 
-  // Interface that users will publish for their Sale collection
-  // that only exposes the methods that are supposed to be public
-  //
   pub resource interface PoolPublic {
     pub fun XToY(from: @FlowToken.Vault, to: &AnyResource{BaloonToken.Receiver})
     pub fun YToX(from: @BaloonToken.Vault, to: &AnyResource{FlowToken.Receiver})
@@ -27,6 +25,7 @@ pub contract Dex {
 
     pub var fee: UFix64
 
+    // Construct which allows liquidity provider to add exchange pairs.
     init(
         x: @FlowToken.Vault,
         y: @BaloonToken.Vault
@@ -64,6 +63,7 @@ pub contract Dex {
         to.deposit(from: <- self.xVault.withdraw(amount:out))
     }
 
+    //  x * y = k invariant
     pub fun price(
         input_amount:UFix64,
         input_reserve:UFix64,
@@ -75,6 +75,7 @@ pub contract Dex {
         return numerator / denominator
     }
 
+    // Public getters
     pub fun xLiquidity(): UFix64 {
         return self.xVault.balance
     }
