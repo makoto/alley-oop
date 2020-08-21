@@ -61,7 +61,7 @@ const SetupVault = () => {
   const [transaction, setTransaction] = useState(null)
   const context = useContext(GlobalContext);
   const address = context.user && context.user.addr
-
+  const {setUpdate, setVault} = context
   const runTransaction = async (event) => {
     event.preventDefault()
     
@@ -95,6 +95,8 @@ const SetupVault = () => {
           if (fcl.tx.isSealed(transaction)) {
             setStatus("Transaction is Sealed")
             unsub()
+            setVault(true)
+            setUpdate(new Date())
           }
         })
     } catch (error) {

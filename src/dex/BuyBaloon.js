@@ -91,7 +91,7 @@ const BuyBaloon = () => {
     setAmount(value)
     context.setAddingFlow(value)
   }
-  console.log('context', context.flowAmountGained)
+  console.log('BuyBaloon', context.flowAmountGained)
 
   return (
     <Card>

@@ -22,6 +22,7 @@ pub fun main() :Bool {
 export default function ScriptOne() {
   const [data, setData] = useState(null)
   const context = useContext(GlobalContext);
+  const {setVault, update, vault} = context
   const address = context.user && context.user.addr
   const scriptOne = getScript(address)
 
@@ -32,8 +33,7 @@ export default function ScriptOne() {
     ])
     const data = await fcl.decode(response)
     setData(data)
-    console.log('***CheckVault', {data})
-    context.setVault(data)
+    if(data && !vault) setVault(true)    
   }
   useEffect(async () => {
     runScript()
