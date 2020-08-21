@@ -30,7 +30,6 @@ export default function ScriptOne() {
     ])
     
     let data = await fcl.decode(response)
-    console.log('***', {data, context})
     setData(data)
     context && context.setFlowReserve(data[0])
     context && context.setBaloonReserve(data[1])
@@ -42,13 +41,24 @@ export default function ScriptOne() {
   return (
     <Card>
       <Header>Current Market</Header>
-      <h2>🎈token</h2>
       {data && (
+        <>
+        <h2>
+          Pool
+        </h2>
         <ul>
-          <li>Liquidity: {data[0]} Flow Token & {data[1]} 🎈 Token</li>
-          <li>1 Flow = {data[2]} 🎈 </li>
-          <li>1 🎈 = {data[3]} Flow </li>
+          <li>Flow token = {data[0].toFixed(5)} </li>
+          <li>🎈token = {data[1].toFixed(5)} </li>
         </ul>
+        <h2>
+        Swap
+        </h2>
+        <ul>
+        <li>1 Flow = {data[2].toFixed(5)} 🎈 </li>
+        <li>1 🎈 = {data[3].toFixed(5)} Flow </li>
+        </ul>
+        </>
+
       )}
     </Card>
   )

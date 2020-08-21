@@ -49,11 +49,11 @@ export default function ScriptOne() {
 
   return (
     <Card>
-      <Header>Your token holdings</Header>
+      <Header>Your Balance</Header>
       {data && (
         <ul>
-          <li>{data[0]} Flow tokens </li>
-          <li>{data[1]} Baloon tokens </li>
+          <li>{data[0].toFixed(5)} Flow tokens </li>
+          <li>{data[1].toFixed(5)} Baloon tokens </li>
         </ul>
       )}
 

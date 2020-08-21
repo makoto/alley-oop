@@ -82,7 +82,7 @@ const BuyBaloon = () => {
   }
   let message
   if (transaction){
-    message = transaction.errorMessage == "" ? (<Code>Bought!</Code>) : (<Code>{transaction.errorMessage}</Code>)
+    message = transaction.errorMessage == "" ? (<Code>Done!</Code>) : (<Code>{transaction.errorMessage}</Code>)
   }
 
   const updateAmount = (event) => {
@@ -91,19 +91,19 @@ const BuyBaloon = () => {
     setAmount(value)
     context.setAddingFlow(value)
   }
-
+  console.log('context', context.flowAmountGained)
 
   return (
     <Card>
-      <input
+      Pay <input
         placeholder="Enter Amount"
         onChange={updateAmount}
-      />
+        style={{margin:"0.5em", width:"7em"}}
+      /> Flow token to buy {context.flowAmountGained} 🎈token
 
-      <button onClick={runTransaction}>
-        Buy
+      <button onClick={runTransaction} style={{margin:"0.5em"}}>
+        Swap
       </button>
-
       <div>{message}</div>
     </Card>
   )

@@ -11,12 +11,15 @@ export const Provider = (props) => {
     const [addingBaloon, setAddingBaloon] = useState(null)
     const [flowReserve, setFlowReserve] = useState(null)
     const [baloonReserve, setBaloonReserve] = useState(null)
+    const [flowAmountGained, setFlowAmountGained] = useState(null)
+    const [baloonAmountGained, setBaloonAmountGained] = useState(null)
 
     return(
       <GlobalContext.Provider value={{
         user, setUser, vault, setVault, update, setUpdate,
         addingFlow, setAddingFlow, addingBaloon, setAddingBaloon,
-        flowReserve, setFlowReserve, baloonReserve, setBaloonReserve
+        flowReserve, setFlowReserve, baloonReserve, setBaloonReserve,
+        flowAmountGained, setFlowAmountGained, baloonAmountGained, setBaloonAmountGained
       }} >
         {props.children}
       </GlobalContext.Provider>  

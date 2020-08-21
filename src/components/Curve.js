@@ -1,9 +1,11 @@
 // This is copy from https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
+import GlobalContext from '../Global'
+
 
 const Curve = (props) => {
   let ref = useRef();
-
+  const context = useContext(GlobalContext);
   useEffect(() => {
     let canvas = ref.current;
 
@@ -91,7 +93,8 @@ const Curve = (props) => {
         let amountGained =  Math.round(10000 * ( props.addingFlow * props.baloonReserve ) / ( newEthReserve ) ) /10000
         ctx.fillStyle = "#000000";
         ctx.fillText(""+(amountGained)+" 🎈 output (-0.3% fee)", plotX(newEthReserve)+textSize,plotY(k/(newEthReserve)));
-
+        
+        context.setFlowAmountGained(amountGained)
       }else if(props.addingBaloon){
 
         let newTokenReserve = props.baloonReserve + parseFloat(props.addingBaloon)
@@ -115,7 +118,7 @@ const Curve = (props) => {
         //console.log("amountGained",amountGained)
         ctx.fillStyle = "#000000";
         ctx.fillText(""+amountGained+" Flow output (-0.25% fee)", plotX(k/(newTokenReserve))+textSize,plotY(newTokenReserve)-textSize);
-
+        context.setBaloonAmountGained(amountGained)
       }
 
       ctx.fillStyle = "#0000FF"

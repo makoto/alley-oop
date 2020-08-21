@@ -18,10 +18,10 @@ transaction {
       y: <- baloonVault.withdraw(amount: UFix64(100))
     )
 
-    dex.XToY(
-      from: <- flowVault.withdraw(amount: UFix64(1)),
-      to:baloonVault
-    )
+    // dex.XToY(
+    //   from: <- flowVault.withdraw(amount: UFix64(1)),
+    //   to:baloonVault
+    // )
     // dex.YToX(from:1, to:flowVault)
     acct.save<@Dex.Pool>(<-dex, to: /storage/DexPool)
 

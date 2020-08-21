@@ -84,7 +84,7 @@ const SellBaloon = () => {
   }
   let message
   if (transaction){
-    message = transaction.errorMessage == "" ? (<Code>Sold!</Code>) : (<Code>{transaction.errorMessage}</Code>)
+    message = transaction.errorMessage == "" ? (<Code>Done!</Code>) : (<Code>{transaction.errorMessage}</Code>)
   }
   const updateAmount = (event) => {
     event.preventDefault();
@@ -95,16 +95,19 @@ const SellBaloon = () => {
 
   return (
     <Card>
-      <input
+      Pay <input
         placeholder="Enter Amount"
         onChange={updateAmount}
+        style={{margin:"0.5em", width:"7em"}}
       />
-      <button onClick={runTransaction}>
-        Sell
+      🎈 token to buy {context.baloonAmountGained} Flow token
+      <button onClick={runTransaction} style={{margin:"0.5em"}}>
+        Swap
       </button>
       <div>{message}</div>
     </Card>
   )
+  
 }
 
 export default SellBaloon
