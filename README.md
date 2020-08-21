@@ -59,13 +59,13 @@ After the frontend server is up, open the browser at https://localhost:3000
 
 ## Current limitation and potential future addtion
 
-### Limitations
+### Limitations
 
 - For the demo purpose, both tokens allow anyone to mint token which needs to be removed for production use.
 - The front-end chart is the fork of [Minimum viable exchange](https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90) tutorial post by Austin Griffith. The curve was mostly there for educational purpose and should be taken out for production use.
 - At source code level, Basketball token are named Baloon token following the example of the Minimum viable exchange
 
-### Future addition
+### Future additions
 
 - Ability for anyone to add a pool
 - Ability to list any token
