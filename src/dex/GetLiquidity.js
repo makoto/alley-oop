@@ -36,11 +36,9 @@ export default function ScriptOne() {
   }
   useEffect(() => {
     runScript()
-  }
-  , [update])
+  }, [update])
   return (
     <Card>
-      <Header>Current Market</Header>
       {data && (
         <>
         <h2>
@@ -48,14 +46,14 @@ export default function ScriptOne() {
         </h2>
         <ul>
           <li>Flow token = {data[0].toFixed(5)} </li>
-          <li>🎈token = {data[1].toFixed(5)} </li>
+          <li>🏀token = {data[1].toFixed(5)} </li>
         </ul>
         <h2>
         Swap
         </h2>
         <ul>
-        <li>1 Flow = {data[2].toFixed(5)} 🎈 </li>
-        <li>1 🎈 = {data[3].toFixed(5)} Flow </li>
+        <li>1 Flow = {data[2].toFixed(5)} 🏀 </li>
+        <li>1 🏀 = {data[3].toFixed(5)} Flow </li>
         </ul>
         </>
 

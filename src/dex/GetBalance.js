@@ -53,7 +53,7 @@ export default function ScriptOne() {
       {data && (
         <ul>
           <li>{data[0].toFixed(5)} Flow tokens </li>
-          <li>{data[1].toFixed(5)} Baloon tokens </li>
+          <li>{data[1].toFixed(5)} 🏀 tokens </li>
         </ul>
       )}
 

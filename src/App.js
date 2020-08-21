@@ -20,6 +20,7 @@ import CheckVault from './dex/CheckVault'
 import SetupVault from './dex/SetupVault'
 import BuyBaloon from './dex/BuyBaloon'
 import SellBaloon from './dex/SellBaloon'
+import "./App.css";
 
 // import MintFlowToken from './dex/MintFlowToken'
 import GlobalContext, {Provider} from './Global'
@@ -33,7 +34,7 @@ function App() {
   const context = useContext(GlobalContext);
   return (
     <Wrapper>
-      <h1>Alley oop DEX</h1>
+      <h1 class="App_Title">🤾🏿‍♂️‍Alley-oop</h1>
       <Section style={{width:'50%'}}>
         {/* <Header>READ from FCL</Header>
         <GetLatestBlock />

@@ -100,7 +100,7 @@ const SellBaloon = () => {
         onChange={updateAmount}
         style={{margin:"0.5em", width:"7em"}}
       />
-      🎈 token to buy {context.baloonAmountGained} Flow token
+      🏀 token to buy {context.baloonAmountGained} Flow token
       <button onClick={runTransaction} style={{margin:"0.5em"}}>
         Swap
       </button>

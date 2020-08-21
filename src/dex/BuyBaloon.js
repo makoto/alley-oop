@@ -99,7 +99,7 @@ const BuyBaloon = () => {
         placeholder="Enter Amount"
         onChange={updateAmount}
         style={{margin:"0.5em", width:"7em"}}
-      /> Flow token to buy {context.flowAmountGained} 🎈token
+      /> Flow token to buy {context.flowAmountGained} 🏀token
 
       <button onClick={runTransaction} style={{margin:"0.5em"}}>
         Swap

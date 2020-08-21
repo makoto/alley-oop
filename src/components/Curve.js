@@ -92,9 +92,10 @@ const Curve = (props) => {
 
         let amountGained =  Math.round(10000 * ( props.addingFlow * props.baloonReserve ) / ( newEthReserve ) ) /10000
         ctx.fillStyle = "#000000";
-        ctx.fillText(""+(amountGained)+" 🎈 output (-0.3% fee)", plotX(newEthReserve)+textSize,plotY(k/(newEthReserve)));
+        ctx.fillText(""+(amountGained)+" 🏀 output (-0.3% fee)", plotX(newEthReserve)+textSize,plotY(k/(newEthReserve)));
         
         context.setFlowAmountGained(amountGained)
+        
       }else if(props.addingBaloon){
 
         let newTokenReserve = props.baloonReserve + parseFloat(props.addingBaloon)
@@ -109,7 +110,7 @@ const Curve = (props) => {
         drawArrow(ctx,plotX(props.flowReserve),plotY(props.baloonReserve),plotX(props.flowReserve),plotY(newTokenReserve))
 
         ctx.fillStyle = "#000000";
-        ctx.fillText(""+(props.addingBaloon)+" 🎈 input", plotX(props.flowReserve)+textSize,plotY(props.baloonReserve));
+        ctx.fillText(""+(props.addingBaloon)+" 🏀 input", plotX(props.flowReserve)+textSize,plotY(props.baloonReserve));
 
         ctx.strokeStyle = "#009900";
         drawArrow(ctx,plotX(props.flowReserve),plotY(newTokenReserve),plotX(k/(newTokenReserve)),plotY(newTokenReserve))
